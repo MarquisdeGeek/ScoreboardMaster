@@ -17,11 +17,8 @@
   },
   "homepage": "https://github.com/darryncampbell-pubnub/Node.js-WebSockets#readme",
   "dependencies": {
-    "@julusian/midi": "^3.6.1",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
-    "midi-file": "^1.2.4",
-    "midi-live-performer": "^1.0.5",
     "ws": "^8.12.0"
   }
 }
