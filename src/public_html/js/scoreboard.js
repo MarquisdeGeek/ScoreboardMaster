@@ -3,13 +3,19 @@ const game_id = (new URL(location.href)).searchParams.get('game_id');
 function Scoreboard(gameData, socketClient) {
     let gameID;
     let presentationMode;
+    let compactMode;
     let showPlayerImages;
 
     (function ctor() {
         const sp = (new URL(location.href)).searchParams;
         gameID = sp.get('game_id') || 0;
         presentationMode = sp.get('presentation') === null ? false : true;
+        compactMode = sp.get('compact') === null ? false : true;
         showPlayerImages = true;
+
+        if (compactMode) {
+            $('body').css({ "transform" : "scale(0.5)" });
+        }
 
         // Create mock game
         if (!gameData) {
@@ -51,6 +57,10 @@ function Scoreboard(gameData, socketClient) {
     function uiPrepareGameData(game) {
         $('#game-name').text(game.title);
         $('#roundcounter').hide(game.showRounds);
+
+        if (compactMode) {
+            $('footer').hide();
+        }
     }
 
     function uiCreatePlayerElements(numPlayers) {
@@ -70,8 +80,8 @@ function Scoreboard(gameData, socketClient) {
             playerContainer.append($('<div>').addClass('btn').addClass('team-score').attr('data-team', i).html('0'));
             const playerScoreContainer = $('<div>').addClass('control-container').attr('data-team', i);
             playerContainer.append(playerScoreContainer);
-            [1,2,3,4].forEach((score) => {
-                playerScoreContainer.append($('<button>').addClass('scorebtn').attr('data-team', i).attr('data-score', score).html(`${score>0?'+':'-'}${score}`));
+            [-1,1,2,3,4].forEach((score) => {
+                playerScoreContainer.append($('<button>').addClass('scorebtn').attr('data-team', i).attr('data-score', score).html(`${score>0?'+':''}${score}`));
             });
         }
     }
@@ -81,11 +91,11 @@ function Scoreboard(gameData, socketClient) {
 
         players.forEach((player, idx) => {
             $(`.team-name[data-team=${idx}]`).html(player.name);
-            if (showPlayerImages) {
-                $(`.team-image[data-team=${idx}]`).attr("src", player.url);
-            } else {
+            if (compactMode || !showPlayerImages) {
                 // Hide the images until we have a way of getting them
                 $(`.team-image-container[data-team=${idx}]`).hide();
+            } else {
+                $(`.team-image[data-team=${idx}]`).attr("src", player.url);
             }
 
             $(`.team-name[data-team=${idx}]`).css("background-color", player.color);

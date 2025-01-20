@@ -25,6 +25,7 @@
     margin: 0 auto;
     margin-top: -20px;
     margin-bottom: 2em;
+
     box-shadow: inset 0px -5px 1px #234d8e, 6px 7px 3px rgba(66, 66, 66, 0.5);
     & h1 {
       font-family: rubik;
