@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta name="viewport" content="width=device-width,initial-scale=1.0">
+      <link href="css/footer.css" rel="stylesheet" type="text/css">
+      <link href="css/scoreboard.css" rel="stylesheet" type="text/css">
+      <title>Scoreboard</title>
+   </head>
+   <body>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <meta name="viewport" content="width=device-width,initial-scale=1.0">
+      <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
+      <div>
+         <header>
+            <h1 class="text-center" id="game-name">Scoreboard</h1>
+         </header>
+         <div class="scorecontainer">
+         </div>
+         <div id="roundcounter">
+            <button id="roundplus">+</button>
+            <div id="rounddisplay">
+               <p>Round</p>
+               <p id="roundnum">0
+               <p>
+            </div>
+            <button id="roundminus">-</button>
+         </div>
+      </div>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <script src="socket_address.js"></script>
+      <script src="js/sockets_client.js"></script>
+      <script src="js/scoreboard.js"></script>
+      <script src="js/fosdem2025.js"></script>
+      <script>
+         const theQuiz = typeof fosdem2025 == typeof undefined ? null : fosdem2025;
+
+         if (typeof socketAddress === typeof undefined) {
+            // Standalone mode!
+            new Scoreboard(theQuiz);
+         } else {
+            let scoreboard;
+            let webSocket = new SocketClient(socketAddress, {
+               onOpenSocket: () => {
+                  scoreboard = new Scoreboard(theQuiz, webSocket);
+                  scoreboard.onOpenSocket()
+               },
+               onMessage: (msg) => {
+                  scoreboard.onMessage(msg);
+               }
+            });
+         }
+      </script>
+
+      <footer>
+        <p>Style by Casey: <a href="https://codepen.io/dafdy/pen/zYxRPQJ">https://codepen.io/dafdy/pen/zYxRPQJ</a> | Code by Steven Goodwin: <a href="https://codepen.io/dafdy/pen/zYxRPQJ">https://codepen.io/dafdy/pen/zYxRPQJ</a></p>
+      </footer>
+   </body>
+</html>
