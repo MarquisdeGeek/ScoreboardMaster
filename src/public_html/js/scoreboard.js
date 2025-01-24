@@ -9,6 +9,7 @@ function Scoreboard(gameData, socketClient) {
     (function ctor() {
         const sp = (new URL(location.href)).searchParams;
         gameID = sp.get('game_id') || 0;
+        gameID = parseInt(gameID, 10);
         presentationMode = sp.get('presentation') === null ? false : true;
         compactMode = sp.get('compact') === null ? false : true;
         showPlayerImages = true;
@@ -144,9 +145,11 @@ function Scoreboard(gameData, socketClient) {
     function onMessage(data) {
         switch (data.msg) {
             case 'scores':
-                data.scores.forEach((score, idx) => {
-                    $(`.team-score[data-team=${idx}]`).html(score);
-                });
+                if (gameID === data.game_id) {
+                    data.scores.forEach((score, idx) => {
+                        $(`.team-score[data-team=${idx}]`).html(score);
+                    });
+                }
                 break;
         }
     }

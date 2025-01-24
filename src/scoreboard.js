@@ -26,7 +26,8 @@ const gamesProgress = {};
 
     function getState(game_id) {
         const state = { 
-            msg: "scores", 
+            msg: "scores",
+            game_id: game_id,
             scores: gamesProgress[game_id].scores
         };
         return state;
